@@ -1,5 +1,6 @@
 import { mailService } from "../services/mail.service.js"
 import { MailFilter } from "../cmps/MailFilter.jsx"
+import { MailList } from "../cmps/MailList.jsx"
 
 const { useState, useEffect } = React
 
@@ -19,6 +20,7 @@ export function MailIndex() {
     }
 
     function onSetFilter(filterByFromChild) {
+        console.log('FilterByFromChild:', filterByFromChild)
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterByFromChild }))
     }
 
@@ -43,16 +45,7 @@ export function MailIndex() {
             </aside>
 
             <main className="mail-main-content">
-                <ul>
-                    {mails.map(mail => (
-                        <li key={mail.id} className="mail-preview-row">
-                            <span className="star">{mail.isStarred ? '★' : '☆'}</span>
-                            <span className="from">{mail.from}</span>
-                            <span className="subject">{mail.subject}</span>
-                            <span className="date">{new Date(mail.createdAt).toLocaleDateString()}</span>
-                        </li>
-                    ))}
-                </ul>
+                <MailList mails={mails} />
             </main>
         </section>
     )

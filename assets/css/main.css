@@ -23,5 +23,9 @@
 
 
 /* Email App Cmps */
+<<<<<<< HEAD
 /* @import './apps/mail/cmps/MailList.css'; */
+=======
+@import './apps/mail/cmps/MailList.css';
+>>>>>>> feature/mail-app
 @import './apps/mail/cmps/MailFilter.css';
