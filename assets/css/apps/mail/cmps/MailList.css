@@ -1,6 +1,3 @@
-<<<<<<< HEAD
- /* mail list */
-=======
 .mail-preview-row {
     display: grid;
     grid-template-columns: 40px 200px 1fr 100px;
@@ -35,4 +32,3 @@
     text-overflow: ellipsis;
     padding-right: 10px;
 }
->>>>>>> feature/mail-app

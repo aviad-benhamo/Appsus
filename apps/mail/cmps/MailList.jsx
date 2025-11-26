@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-export function MailList() {
-    return <div>Mail list</div>
-=======
 export function MailList({ mails }) {
 
     return (
@@ -18,5 +14,4 @@ export function MailList({ mails }) {
             </ul>
         </section>
     )
->>>>>>> feature/mail-app
 }

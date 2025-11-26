@@ -48,7 +48,6 @@ function query(filterBy = {}) {
 
             // 3. Filter by Read/Unread
             if (filterBy.isRead !== undefined && filterBy.isRead !== null && filterBy.isRead !== '') {
-                // Assuming filterBy.isRead comes as a boolean or string 'true'/'false'
                 const isReadBool = (String(filterBy.isRead) === 'true')
                 mails = mails.filter(mail => mail.isRead === isReadBool)
             }
@@ -62,11 +61,10 @@ function query(filterBy = {}) {
 
 function get(mailId) {
     return storageService.get(MAIL_KEY, mailId)
-    // Optional: Add logic here if you need next/prev mail functionality
 }
 
 function remove(mailId) {
-    // Logic: If in trash -> remove permanently. If not -> move to trash.
+    // If in trash -> remove permanently. If not -> move to trash.
     return get(mailId).then(mail => {
         if (mail.removedAt) {
             return storageService.remove(MAIL_KEY, mailId)

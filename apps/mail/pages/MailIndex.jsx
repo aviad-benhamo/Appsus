@@ -20,7 +20,6 @@ export function MailIndex() {
     }
 
     function onSetFilter(filterByFromChild) {
-        console.log('FilterByFromChild:', filterByFromChild)
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterByFromChild }))
     }
 
@@ -34,13 +33,13 @@ export function MailIndex() {
             </header>
 
             <aside className="mail-sidebar">
-                <button className="compose-btn">✏️ Compose</button>
+                <button className="compose-btn">Compose</button>
                 <nav>
-                    <div className="folder-link active">📥 Inbox</div>
-                    <div className="folder-link">⭐️ Starred</div>
-                    <div className="folder-link">📤 Sent</div>
-                    <div className="folder-link">📄 Drafts</div>
-                    <div className="folder-link">🗑️ Trash</div>
+                    <div className="folder-link active">Inbox</div>
+                    <div className="folder-link">Starred</div>
+                    <div className="folder-link">Sent</div>
+                    <div className="folder-link">Drafts</div>
+                    <div className="folder-link">Trash</div>
                 </nav>
             </aside>
 
