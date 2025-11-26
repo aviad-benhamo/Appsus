@@ -1,0 +1,54 @@
+.mail-preview {
+    display: grid;
+    grid-template-columns: 40px 200px 1fr 100px;
+    padding: 10px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+    align-items: center;
+    font-size: 14px;
+    color: #202124;
+    transition: background-color 0.1s;
+}
+
+.mail-preview:hover {
+    box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    z-index: 1;
+    position: relative;
+    background-color: #f8f9fa;
+}
+
+.mail-preview.read {
+    background-color: rgba(242, 245, 245, 0.8);
+}
+
+.mail-preview:not(.read) .from,
+.mail-preview:not(.read) .subject,
+.mail-preview:not(.read) .date {
+    font-weight: 700;
+    color: #000;
+}
+
+.mail-preview .star {
+    font-size: 1.2rem;
+    color: #ccc;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.mail-preview .star:hover {
+    color: gold;
+}
+
+.mail-preview .subject {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+}
+
+.mail-preview .from {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
