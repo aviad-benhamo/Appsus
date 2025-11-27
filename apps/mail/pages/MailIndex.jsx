@@ -1,14 +1,17 @@
 import { mailService } from "../services/mail.service.js"
 import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
+import { MailCompose } from "../cmps/MailCompose.jsx"
 
 const { useState, useEffect } = React
-const { Outlet } = ReactRouterDOM
+const { Outlet, useSearchParams } = ReactRouterDOM
 
 export function MailIndex() {
 
     const [mails, setMails] = useState(null)
     const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '' })
+    const [isComposeOpen, setIsComposeOpen] = useState(false)
+
 
     useEffect(() => {
         loadMails()
@@ -37,6 +40,19 @@ export function MailIndex() {
             .catch(err => console.log('Cannot update mail', err))
     }
 
+    function onSaveMail(mailToSend) {
+        mailService.save(mailToSend)
+            .then(() => {
+                setIsComposeOpen(false)
+
+                if (filterBy.status === 'sent') {
+                    loadMails()
+                }
+                // UserMsg "Mail Sent"
+            })
+            .catch(err => console.log('Cannot send mail', err))
+    }
+
 
     if (!mails) return <div>Loading...</div>
 
@@ -48,7 +64,7 @@ export function MailIndex() {
             </header>
 
             <aside className="mail-sidebar">
-                <button className="compose-btn">Compose</button>
+                <button className="compose-btn" onClick={() => setIsComposeOpen(true)}>Compose</button>
                 <MailFolderList
                     filterBy={filterBy}
                     onSetFilter={onSetFilter}
@@ -58,6 +74,7 @@ export function MailIndex() {
             <main className="mail-main-content">
                 <Outlet context={{ mails, onUpdateMail }} />
             </main>
+            {isComposeOpen && <MailCompose onSaveMail={onSaveMail} onClose={() => setIsComposeOpen(false)} />}
         </section>
     )
 }
