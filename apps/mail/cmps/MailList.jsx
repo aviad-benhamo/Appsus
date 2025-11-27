@@ -2,7 +2,7 @@ import { MailPreview } from "./MailPreview.jsx"
 const { useOutletContext } = ReactRouterDOM
 
 export function MailList() {
-    const { mails, onUpdateMail } = useOutletContext()
+    const { mails, onUpdateMail, onRemoveMail } = useOutletContext()
 
     if (!mails) return <div>Loading...</div>
 
@@ -13,7 +13,8 @@ export function MailList() {
                     <MailPreview
                         key={mail.id}
                         mail={mail}
-                        onUpdateMail={onUpdateMail} />
+                        onUpdateMail={onUpdateMail}
+                        onRemoveMail={onRemoveMail} />
                 ))}
             </ul>
         </section>

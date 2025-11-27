@@ -46,6 +46,14 @@ export function MailIndex() {
             .catch(err => console.log('Cannot update mail', err))
     }
 
+    function onRemoveMail(mailId) {
+        return mailService.remove(mailId)
+            .then(() => {
+                setMails(prevMails => prevMails.filter(m => m.id !== mailId))
+            })
+            .catch(err => console.log('Cannot remove mail', err))
+    }
+
     function onSaveMail(mailToSend) {
         mailService.save(mailToSend)
             .then(() => {
@@ -81,7 +89,7 @@ export function MailIndex() {
             </aside>
 
             <main className="mail-main-content">
-                <Outlet context={{ mails, onUpdateMail }} />
+                <Outlet context={{ mails, onUpdateMail, onRemoveMail }} />
             </main>
             {isComposeOpen && <MailCompose onSaveMail={onSaveMail} onClose={() => setIsComposeOpen(false)} />}
         </section>

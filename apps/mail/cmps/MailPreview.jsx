@@ -1,6 +1,6 @@
 const { useNavigate } = ReactRouterDOM
 
-export function MailPreview({ mail, onUpdateMail }) {
+export function MailPreview({ mail, onUpdateMail, onRemoveMail }) {
     const navigate = useNavigate()
     const previewClass = `mail-preview ${mail.isRead ? 'read' : ''}`
 
@@ -25,6 +25,11 @@ export function MailPreview({ mail, onUpdateMail }) {
         onUpdateMail(mailToUpdate)
     }
 
+    function onRemove(ev) {
+        ev.stopPropagation()
+        onRemoveMail(mail.id)
+    }
+
     return (
         <li className={previewClass} onClick={onOpenMail}>
             <span
@@ -36,8 +41,12 @@ export function MailPreview({ mail, onUpdateMail }) {
             <span className="from">{mail.from}</span>
             <span className="subject">{mail.subject}</span>
             <div className="actions">
-                <button onClick={onToggleRead} className="btn-icon">
-                    {mail.isRead ? 'Unread' : 'Read'}
+                <button onClick={onRemove} className="btn-icon" title="Delete">
+                    🗑️
+                </button>
+
+                <button onClick={onToggleRead} className="btn-icon" title={mail.isRead ? 'Mark as unread' : 'Mark as read'}>
+                    {mail.isRead ? '📩' : '📧'}
                 </button>
             </div>
 

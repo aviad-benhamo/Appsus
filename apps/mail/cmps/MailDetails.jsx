@@ -7,7 +7,8 @@ export function MailDetails({ mails }) {
     const [mail, setMail] = useState(null)
     const { mailId } = useParams()
     const navigate = useNavigate()
-    const { onUpdateMail } = useOutletContext()
+    const { onUpdateMail, onRemoveMail } = useOutletContext()
+
 
     useEffect(() => {
         loadMail()
@@ -22,12 +23,9 @@ export function MailDetails({ mails }) {
             })
     }
 
-    function onRemoveMail() {
-        mailService.remove(mail.id)
-            .then(() => {
-                navigate('/mail')
-            })
-            .catch(err => console.log('Problems removing mail', err))
+    async function onDeleteMail() {
+        await onRemoveMail(mail.id)
+        navigate('/mail')
     }
 
     async function onToggleReadStatus() {
@@ -49,7 +47,7 @@ export function MailDetails({ mails }) {
                 <button onClick={onToggleReadStatus}>
                     Mark as Unread
                 </button>
-                <button onClick={onRemoveMail}>Delete</button>
+                <button onClick={onDeleteMail}>🗑️ Delete</button>
             </div>
 
             <h2>{mail.subject}</h2>

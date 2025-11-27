@@ -1,6 +1,6 @@
 .mail-preview {
     display: grid;
-    grid-template-columns: 30px 200px 1fr 30px 100px;
+    grid-template-columns: 30px 200px 1fr 80px 100px;
     padding: 10px;
     border-bottom: 1px solid #f2f2f2;
     cursor: pointer;
