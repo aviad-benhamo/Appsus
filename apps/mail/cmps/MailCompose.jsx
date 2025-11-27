@@ -25,11 +25,23 @@ export function MailCompose({ onSaveMail, onClose }) {
         onSaveMail(mailToSend)
     }
 
+    function onCloseModal() {
+        if (newMail.to || newMail.subject || newMail.body) {
+            const draftToSave = {
+                ...newMail,
+                createdAt: Date.now(),
+            }
+            onSaveMail(draftToSave)
+        } else {
+            onClose()
+        }
+    }
+
     return (
         <section className="mail-compose">
             <header className="compose-header">
                 <h4>New Message</h4>
-                <button onClick={onClose} className="close-btn">✕</button>
+                <button onClick={onCloseModal} className="close-btn">✕</button>
             </header>
 
             <form onSubmit={onSend} className="compose-form">

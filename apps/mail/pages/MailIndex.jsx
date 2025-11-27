@@ -4,7 +4,7 @@ import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
 
 const { useState, useEffect } = React
-const { Outlet, useSearchParams } = ReactRouterDOM
+const { Outlet } = ReactRouterDOM
 
 export function MailIndex() {
 
@@ -51,7 +51,7 @@ export function MailIndex() {
             .then(() => {
                 setIsComposeOpen(false)
 
-                if (filterBy.status === 'sent') {
+                if (filterBy.status === 'sent' || filterBy.status === 'draft') {
                     loadMails()
                 }
                 // UserMsg "Mail Sent"

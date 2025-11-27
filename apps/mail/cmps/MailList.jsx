@@ -3,6 +3,9 @@ const { useOutletContext } = ReactRouterDOM
 
 export function MailList() {
     const { mails, onUpdateMail } = useOutletContext()
+
+    if (!mails) return <div>Loading...</div>
+
     return (
         <section className="mail-list">
             <ul>
