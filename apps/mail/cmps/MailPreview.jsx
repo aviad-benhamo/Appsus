@@ -18,9 +18,21 @@ export function MailPreview({ mail, onUpdateMail }) {
         onUpdateMail(mailToUpdate)
     }
 
+    function onToggleStar(ev) {
+        ev.stopPropagation()
+
+        const mailToUpdate = { ...mail, isStarred: !mail.isStarred }
+        onUpdateMail(mailToUpdate)
+    }
+
     return (
         <li className={previewClass} onClick={onOpenMail}>
-            <span className="star">{mail.isStarred ? '★' : '☆'}</span>
+            <span
+                className={`star ${mail.isStarred ? 'starred' : ''}`}
+                onClick={onToggleStar}
+            >
+                {mail.isStarred ? '★' : '☆'}
+            </span>
             <span className="from">{mail.from}</span>
             <span className="subject">{mail.subject}</span>
             <div className="actions">

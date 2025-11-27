@@ -37,7 +37,13 @@
 }
 
 .mail-preview .star:hover {
-    color: gold;
+    color: #f4b400;
+    transform: scale(1.2);
+
+}
+
+.mail-preview .star.starred {
+    color: #f4b400;
 }
 
 .mail-preview .subject {
