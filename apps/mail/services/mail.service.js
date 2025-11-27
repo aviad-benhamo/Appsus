@@ -50,14 +50,14 @@ function query(filterBy = {}) {
                 mails = mails.filter(mail => mail.isRead === filterBy.isRead)
             }
 
-            if (filterBy.sortBy) {
-                if (filterBy.sortBy === 'date') {
-                    mails.sort((a, b) => b.createdAt - a.createdAt)
-                } else if (filterBy.sortBy === 'title') {
-                    mails.sort((a, b) => a.subject.localeCompare(b.subject))
-                }
+            if (filterBy.sortBy === 'title') {
+                mails.sort((a, b) => a.subject.localeCompare(b.subject))
             } else {
-                mails.sort((a, b) => b.createdAt - a.createdAt)
+                mails.sort((a, b) => {
+                    const dateA = a.sentAt || a.createdAt
+                    const dateB = b.sentAt || b.createdAt
+                    return dateB - dateA
+                })
             }
 
             return mails

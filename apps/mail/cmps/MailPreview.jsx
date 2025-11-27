@@ -30,6 +30,14 @@ export function MailPreview({ mail, onUpdateMail, onRemoveMail }) {
         onRemoveMail(mail.id)
     }
 
+    function getFormattedDate(dateTs) {
+        const date = new Date(dateTs)
+        return date.toLocaleDateString('en-US', {
+            month: 'short', // 'Nov'
+            day: 'numeric'  // '20'
+        })
+    }
+
     return (
         <li className={previewClass} onClick={onOpenMail}>
             <span
@@ -51,7 +59,10 @@ export function MailPreview({ mail, onUpdateMail, onRemoveMail }) {
             </div>
 
             <span className="date">
-                {new Date(mail.createdAt).toLocaleDateString()}
+                {mail.sentAt
+                    ? getFormattedDate(mail.sentAt)
+                    : <span style={{ color: '#c0392b', fontStyle: 'italic' }}>Draft</span>
+                }
             </span>
         </li>
     )
