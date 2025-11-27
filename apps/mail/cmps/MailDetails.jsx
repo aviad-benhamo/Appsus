@@ -1,12 +1,13 @@
 import { mailService } from "../services/mail.service.js"
 
 const { useEffect, useState } = React
-const { useParams, useNavigate } = ReactRouterDOM
+const { useParams, useNavigate, useOutletContext } = ReactRouterDOM
 
 export function MailDetails({ mails }) {
     const [mail, setMail] = useState(null)
     const { mailId } = useParams()
     const navigate = useNavigate()
+    const { onUpdateMail } = useOutletContext()
 
     useEffect(() => {
         loadMail()
@@ -31,11 +32,8 @@ export function MailDetails({ mails }) {
 
     function onToggleReadStatus() {
         const mailToUpdate = { ...mail, isRead: !mail.isRead }
-
-        mailService.save(mailToUpdate)
-            .then(savedMail => {
-                setMail(savedMail)
-            })
+        onUpdateMail(mailToUpdate)
+        navigate('/mail')
     }
 
 
@@ -47,7 +45,7 @@ export function MailDetails({ mails }) {
             <div className="toolbar">
                 <button onClick={() => navigate('/mail')}>← Back</button>
                 <button onClick={onToggleReadStatus}>
-                    {mail.isRead ? 'Mark as Unread' : 'Mark as Read'}
+                    Mark as Unread
                 </button>
                 <button onClick={onRemoveMail}>Delete</button>
             </div>
