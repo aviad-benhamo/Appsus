@@ -1,5 +1,6 @@
 import { mailService } from "../services/mail.service.js"
 import { MailFilter } from "../cmps/MailFilter.jsx"
+import { MailFolderList } from "../cmps/MailFolderList.jsx"
 
 const { useState, useEffect } = React
 const { Outlet } = ReactRouterDOM
@@ -23,10 +24,15 @@ export function MailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterByFromChild }))
     }
 
+
     function onUpdateMail(mailToUpdate) {
-        mailService.save(mailToUpdate)
+        return mailService.save(mailToUpdate)
             .then((savedMail) => {
-                setMails(prevMails => prevMails.map(mail => mail.id === savedMail.id ? savedMail : mail))
+                if (filterBy.status !== 'inbox' || filterBy.isRead !== '') {
+                    loadMails()
+                } else {
+                    setMails(prevMails => prevMails.map(m => m.id === savedMail.id ? savedMail : m))
+                }
             })
             .catch(err => console.log('Cannot update mail', err))
     }
@@ -43,13 +49,10 @@ export function MailIndex() {
 
             <aside className="mail-sidebar">
                 <button className="compose-btn">Compose</button>
-                <nav>
-                    <div className="folder-link active">Inbox</div>
-                    <div className="folder-link">Starred</div>
-                    <div className="folder-link">Sent</div>
-                    <div className="folder-link">Drafts</div>
-                    <div className="folder-link">Trash</div>
-                </nav>
+                <MailFolderList
+                    filterBy={filterBy}
+                    onSetFilter={onSetFilter}
+                />
             </aside>
 
             <main className="mail-main-content">

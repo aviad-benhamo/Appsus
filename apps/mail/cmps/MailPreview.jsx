@@ -4,9 +4,9 @@ export function MailPreview({ mail, onUpdateMail }) {
     const navigate = useNavigate()
     const previewClass = `mail-preview ${mail.isRead ? 'read' : ''}`
 
-    function onOpenMail() {
+    async function onOpenMail() {
         if (!mail.isRead) {
-            onUpdateMail({ ...mail, isRead: true })
+            await onUpdateMail({ ...mail, isRead: true })
         }
         navigate(`/mail/${mail.id}`)
     }

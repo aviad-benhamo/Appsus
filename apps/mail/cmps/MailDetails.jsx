@@ -30,9 +30,11 @@ export function MailDetails({ mails }) {
             .catch(err => console.log('Problems removing mail', err))
     }
 
-    function onToggleReadStatus() {
+    async function onToggleReadStatus() {
         const mailToUpdate = { ...mail, isRead: !mail.isRead }
-        onUpdateMail(mailToUpdate)
+
+        await onUpdateMail(mailToUpdate)
+
         navigate('/mail')
     }
 
