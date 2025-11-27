@@ -3,6 +3,7 @@ import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailList } from "../cmps/MailList.jsx"
 
 const { useState, useEffect } = React
+const { Outlet } = ReactRouterDOM
 
 export function MailIndex() {
 
@@ -44,7 +45,7 @@ export function MailIndex() {
             </aside>
 
             <main className="mail-main-content">
-                <MailList mails={mails} />
+                <Outlet context={{ mails }} />
             </main>
         </section>
     )

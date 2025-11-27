@@ -28,7 +28,7 @@ export function MailFilter({ filterBy, onSetFilter }) {
 
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
-
+    
     return (
         <section className="mail-filter">
             <input

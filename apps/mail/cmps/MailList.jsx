@@ -1,7 +1,8 @@
 import { MailPreview } from "./MailPreview.jsx"
+const { useOutletContext } = ReactRouterDOM
 
-export function MailList({ mails }) {
-
+export function MailList() {
+    const { mails } = useOutletContext()
     return (
         <section className="mail-list">
             <ul>
