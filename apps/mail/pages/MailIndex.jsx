@@ -9,7 +9,8 @@ const { Outlet } = ReactRouterDOM
 export function MailIndex() {
 
     const [mails, setMails] = useState(null)
-    const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '' })
+    const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '', sortBy: 'date' })
+
     const [isComposeOpen, setIsComposeOpen] = useState(false)
     const [stats, setStats] = useState({ unreadCount: 0, draftCount: 0 })
 
@@ -89,7 +90,13 @@ export function MailIndex() {
             </aside>
 
             <main className="mail-main-content">
-                <Outlet context={{ mails, onUpdateMail, onRemoveMail }} />
+                <Outlet context={{
+                    mails,
+                    onUpdateMail,
+                    onRemoveMail,
+                    filterBy,
+                    onSetFilter
+                }} />
             </main>
             {isComposeOpen && <MailCompose onSaveMail={onSaveMail} onClose={() => setIsComposeOpen(false)} />}
         </section>

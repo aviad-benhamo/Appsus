@@ -23,7 +23,6 @@ export const mailService = {
 function query(filterBy = {}) {
     return storageService.query(MAIL_KEY)
         .then(mails => {
-            // 1. Filter by Status (Folder)
             if (filterBy.status) {
                 if (filterBy.status === 'inbox') {
                     mails = mails.filter(mail => mail.to === loggedinUser.email && !mail.removedAt && mail.sentAt)
@@ -38,23 +37,28 @@ function query(filterBy = {}) {
                 }
             }
 
-            // 2. Filter by Search Text (Subject or Body)
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt.trim(), 'i')
                 mails = mails.filter(mail =>
                     regExp.test(mail.subject) ||
                     regExp.test(mail.body) ||
-                    regExp.test(mail.from))
+                    regExp.test(mail.from)
+                )
             }
 
-            // 3. Filter by Read/Unread
-            if (filterBy.isRead !== undefined && filterBy.isRead !== null && filterBy.isRead !== '') {
-                const isReadBool = (String(filterBy.isRead) === 'true')
-                mails = mails.filter(mail => mail.isRead === isReadBool)
+            if (filterBy.isRead !== undefined && filterBy.isRead !== '') {
+                mails = mails.filter(mail => mail.isRead === filterBy.isRead)
             }
 
-            // 4. Sort (Default by Date Descending)
-            mails.sort((a, b) => (b.createdAt - a.createdAt))
+            if (filterBy.sortBy) {
+                if (filterBy.sortBy === 'date') {
+                    mails.sort((a, b) => b.createdAt - a.createdAt)
+                } else if (filterBy.sortBy === 'title') {
+                    mails.sort((a, b) => a.subject.localeCompare(b.subject))
+                }
+            } else {
+                mails.sort((a, b) => b.createdAt - a.createdAt)
+            }
 
             return mails
         })
