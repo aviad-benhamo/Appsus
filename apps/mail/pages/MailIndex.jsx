@@ -11,11 +11,16 @@ export function MailIndex() {
     const [mails, setMails] = useState(null)
     const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '' })
     const [isComposeOpen, setIsComposeOpen] = useState(false)
-
+    const [stats, setStats] = useState({ unreadCount: 0, draftCount: 0 })
 
     useEffect(() => {
         loadMails()
+        refreshStats()
     }, [filterBy])
+
+    function refreshStats() {
+        mailService.getMailCount().then(setStats)
+    }
 
     function loadMails() {
         mailService.query(filterBy)
@@ -36,6 +41,7 @@ export function MailIndex() {
                 } else {
                     setMails(prevMails => prevMails.map(m => m.id === savedMail.id ? savedMail : m))
                 }
+                refreshStats()
             })
             .catch(err => console.log('Cannot update mail', err))
     }
@@ -49,6 +55,7 @@ export function MailIndex() {
                     loadMails()
                 }
                 // UserMsg "Mail Sent"
+                refreshStats()
             })
             .catch(err => console.log('Cannot send mail', err))
     }
@@ -68,6 +75,8 @@ export function MailIndex() {
                 <MailFolderList
                     filterBy={filterBy}
                     onSetFilter={onSetFilter}
+                    unreadCount={stats.unreadCount}
+                    draftCount={stats.draftCount}
                 />
             </aside>
 

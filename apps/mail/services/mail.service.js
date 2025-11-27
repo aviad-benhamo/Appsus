@@ -16,7 +16,8 @@ export const mailService = {
     save,
     getEmptyMail,
     getFilterFromSearchParams,
-    getLoggedinUser
+    getLoggedinUser,
+    getMailCount,
 }
 
 function query(filterBy = {}) {
@@ -136,4 +137,20 @@ function _createMail(i) {
         from: isIncoming ? `${utilService.makeLorem(1)}@momo.com` : loggedinUser.email,
         to: isIncoming ? loggedinUser.email : `${utilService.makeLorem(1)}@momo.com`
     }
+}
+
+function getMailCount() {
+    return storageService.query(MAIL_KEY).then(mails => {
+        return mails.reduce((acc, mail) => {
+            if (mail.to === loggedinUser.email && !mail.removedAt && mail.sentAt && !mail.isRead) {
+                acc.unreadCount++
+            }
+
+            if (!mail.sentAt && !mail.removedAt) {
+                acc.draftCount++
+            }
+
+            return acc
+        }, { unreadCount: 0, draftCount: 0 })
+    })
 }

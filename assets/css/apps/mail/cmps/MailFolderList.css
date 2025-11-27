@@ -32,3 +32,14 @@
 .mail-folder-list .icon {
     font-size: 1.1em;
 }
+
+.badge {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: bold;
+    color: #444746;
+}
+
+.folder-link.active .badge {
+    color: #001d35;
+}

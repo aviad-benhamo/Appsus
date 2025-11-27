@@ -1,7 +1,7 @@
 const { useNavigate } = ReactRouterDOM
 
 
-export function MailFolderList({ filterBy, onSetFilter }) {
+export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount }) {
 
     const navigate = useNavigate()
 
@@ -18,6 +18,8 @@ export function MailFolderList({ filterBy, onSetFilter }) {
                 onClick={() => onFolderSelect({ status: 'inbox', isRead: '' })}
             >
                 <span className="icon">📥</span> Inbox
+                {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+
             </div>
 
             <div
@@ -46,6 +48,8 @@ export function MailFolderList({ filterBy, onSetFilter }) {
                 onClick={() => onFolderSelect({ status: 'draft', isRead: '' })}
             >
                 <span className="icon">📄</span> Drafts
+                {draftCount > 0 && <span className="badge">{draftCount}</span>}
+
             </div>
 
             <div
