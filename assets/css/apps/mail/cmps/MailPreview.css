@@ -1,6 +1,6 @@
 .mail-preview {
     display: grid;
-    grid-template-columns: 40px 200px 1fr 100px;
+    grid-template-columns: 30px 200px 1fr 30px 100px;
     padding: 10px;
     border-bottom: 1px solid #f2f2f2;
     cursor: pointer;
@@ -51,4 +51,23 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.mail-preview .actions {
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.mail-preview:hover .actions {
+    opacity: 1;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 2px;
 }

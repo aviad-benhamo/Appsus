@@ -29,6 +29,16 @@ export function MailDetails({ mails }) {
             .catch(err => console.log('Problems removing mail', err))
     }
 
+    function onToggleReadStatus() {
+        const mailToUpdate = { ...mail, isRead: !mail.isRead }
+
+        mailService.save(mailToUpdate)
+            .then(savedMail => {
+                setMail(savedMail)
+            })
+    }
+
+
     if (!mail) return <div>Loading...</div>
 
 
@@ -36,6 +46,9 @@ export function MailDetails({ mails }) {
         <section className="mail-details">
             <div className="toolbar">
                 <button onClick={() => navigate('/mail')}>← Back</button>
+                <button onClick={onToggleReadStatus}>
+                    {mail.isRead ? 'Mark as Unread' : 'Mark as Read'}
+                </button>
                 <button onClick={onRemoveMail}>Delete</button>
             </div>
 

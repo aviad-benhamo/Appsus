@@ -1,6 +1,5 @@
 import { mailService } from "../services/mail.service.js"
 import { MailFilter } from "../cmps/MailFilter.jsx"
-import { MailList } from "../cmps/MailList.jsx"
 
 const { useState, useEffect } = React
 const { Outlet } = ReactRouterDOM
@@ -24,6 +23,15 @@ export function MailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterByFromChild }))
     }
 
+    function onUpdateMail(mailToUpdate) {
+        mailService.save(mailToUpdate)
+            .then((savedMail) => {
+                setMails(prevMails => prevMails.map(mail => mail.id === savedMail.id ? savedMail : mail))
+            })
+            .catch(err => console.log('Cannot update mail', err))
+    }
+
+
     if (!mails) return <div>Loading...</div>
 
     return (
@@ -45,7 +53,7 @@ export function MailIndex() {
             </aside>
 
             <main className="mail-main-content">
-                <Outlet context={{ mails }} />
+                <Outlet context={{ mails, onUpdateMail }} />
             </main>
         </section>
     )

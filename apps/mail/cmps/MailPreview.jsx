@@ -1,10 +1,21 @@
 const { useNavigate } = ReactRouterDOM
 
-export function MailPreview({ mail }) {
+export function MailPreview({ mail, onUpdateMail }) {
     const navigate = useNavigate()
     const previewClass = `mail-preview ${mail.isRead ? 'read' : ''}`
+
     function onOpenMail() {
+        if (!mail.isRead) {
+            onUpdateMail({ ...mail, isRead: true })
+        }
         navigate(`/mail/${mail.id}`)
+    }
+
+    function onToggleRead(ev) {
+        ev.stopPropagation()
+
+        const mailToUpdate = { ...mail, isRead: !mail.isRead }
+        onUpdateMail(mailToUpdate)
     }
 
     return (
@@ -12,6 +23,12 @@ export function MailPreview({ mail }) {
             <span className="star">{mail.isStarred ? '★' : '☆'}</span>
             <span className="from">{mail.from}</span>
             <span className="subject">{mail.subject}</span>
+            <div className="actions">
+                <button onClick={onToggleRead} className="btn-icon">
+                    {mail.isRead ? 'Unread' : 'Read'}
+                </button>
+            </div>
+
             <span className="date">
                 {new Date(mail.createdAt).toLocaleDateString()}
             </span>
