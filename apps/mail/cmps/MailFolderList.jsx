@@ -1,7 +1,7 @@
 const { useNavigate } = ReactRouterDOM
 
 
-export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount }) {
+export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount, isExpanded }) {
 
     const navigate = useNavigate()
 
@@ -10,54 +10,66 @@ export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount 
         navigate('/mail')
     }
 
+    function FolderRow({ label, icon, isActive, onClick, count }) {
+        return (
+            <div
+                className={`folder-link ${isActive ? 'active' : ''} ${!isExpanded ? 'collapsed' : ''}`}
+                onClick={onClick}
+                title={label}
+            >
+                <span className="icon">{icon}</span>
+
+                {isExpanded && (
+                    <React.Fragment>
+                        <span className="label">{label}</span>
+                        {count > 0 && <span className="badge">{count}</span>}
+                    </React.Fragment>
+                )}
+            </div>
+        )
+    }
+
+
     return (
         <nav className="mail-folder-list">
 
-            <div
-                className={`folder-link ${filterBy.status === 'inbox' && filterBy.isRead === '' ? 'active' : ''}`}
+            <FolderRow
+                label="Inbox" icon="📥"
+                isActive={filterBy.status === 'inbox' && filterBy.isRead === ''}
                 onClick={() => onFolderSelect({ status: 'inbox', isRead: '' })}
-            >
-                <span className="icon">📥</span> Inbox
-                {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+                count={unreadCount}
+            />
 
-            </div>
-
-            <div
-                className={`folder-link ${filterBy.isRead === false ? 'active' : ''}`}
+            <FolderRow
+                label="Unread" icon="✉️"
+                isActive={filterBy.isRead === false}
                 onClick={() => onFolderSelect({ status: 'inbox', isRead: false })}
-            >
-                <span className="icon">✉️</span> Unread
-            </div>
+            />
 
-            <div
-                className={`folder-link ${filterBy.status === 'starred' ? 'active' : ''}`}
+            <FolderRow
+                label="Starred" icon="⭐️"
+                isActive={filterBy.status === 'starred'}
                 onClick={() => onFolderSelect({ status: 'starred', isRead: '' })}
-            >
-                <span className="icon">⭐️</span> Starred
-            </div>
+            />
 
-            <div
-                className={`folder-link ${filterBy.status === 'sent' ? 'active' : ''}`}
+            <FolderRow
+                label="Sent" icon="📤"
+                isActive={filterBy.status === 'sent'}
                 onClick={() => onFolderSelect({ status: 'sent', isRead: '' })}
-            >
-                <span className="icon">📤</span> Sent
-            </div>
+            />
 
-            <div
-                className={`folder-link ${filterBy.status === 'draft' ? 'active' : ''}`}
+            <FolderRow
+                label="Drafts" icon="📄"
+                isActive={filterBy.status === 'draft'}
                 onClick={() => onFolderSelect({ status: 'draft', isRead: '' })}
-            >
-                <span className="icon">📄</span> Drafts
-                {draftCount > 0 && <span className="badge">{draftCount}</span>}
+                count={draftCount}
+            />
 
-            </div>
-
-            <div
-                className={`folder-link ${filterBy.status === 'trash' ? 'active' : ''}`}
+            <FolderRow
+                label="Trash" icon="🗑️"
+                isActive={filterBy.status === 'trash'}
                 onClick={() => onFolderSelect({ status: 'trash', isRead: '' })}
-            >
-                <span className="icon">🗑️</span> Trash
-            </div>
+            />
 
         </nav>
     )

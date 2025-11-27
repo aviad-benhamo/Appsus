@@ -12,6 +12,7 @@ export function MailIndex() {
     const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '', sortBy: 'date' })
 
     const [isComposeOpen, setIsComposeOpen] = useState(false)
+    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
     const [stats, setStats] = useState({ unreadCount: 0, draftCount: 0 })
 
     useEffect(() => {
@@ -73,19 +74,35 @@ export function MailIndex() {
     if (!mails) return <div>Loading...</div>
 
     return (
-        <section className="mail-index">
+        <section className={`mail-index ${isSidebarExpanded ? '' : 'collapsed'}`}>
             <header className="mail-header">
-                <h3>MisterEmail</h3>
+                <div className="header-start">
+                    <button
+                        className="menu-toggle-btn"
+                        onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
+                    >
+                        ☰
+                    </button>
+                    <h3>MisterEmail</h3>
+                </div>
                 <MailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
             </header>
 
             <aside className="mail-sidebar">
-                <button className="compose-btn" onClick={() => setIsComposeOpen(true)}>Compose</button>
+                <button
+                    className={`compose-btn ${isSidebarExpanded ? '' : 'small'}`}
+                    onClick={() => setIsComposeOpen(true)}
+                >
+                    <span className="icon">✏️</span>
+                    {isSidebarExpanded && <span className="txt">Compose</span>}
+                </button>
+
                 <MailFolderList
                     filterBy={filterBy}
                     onSetFilter={onSetFilter}
                     unreadCount={stats.unreadCount}
                     draftCount={stats.draftCount}
+                    isExpanded={isSidebarExpanded}
                 />
             </aside>
 
@@ -98,7 +115,9 @@ export function MailIndex() {
                     onSetFilter
                 }} />
             </main>
-            {isComposeOpen && <MailCompose onSaveMail={onSaveMail} onClose={() => setIsComposeOpen(false)} />}
+            {isComposeOpen && <MailCompose
+                onSaveMail={onSaveMail}
+                onClose={() => setIsComposeOpen(false)} />}
         </section>
     )
 }
