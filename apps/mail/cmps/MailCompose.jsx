@@ -2,36 +2,26 @@ import { mailService } from "../services/mail.service.js"
 
 const { useState, useEffect, useRef } = React
 
-export function MailCompose({ onSaveMail, onClose }) {
+export function MailCompose({ initialMail, onSaveMail, onClose }) {
 
-    const [newMail, setNewMail] = useState(mailService.getEmptyMail())
-    const draftRef = useRef(newMail)
+    const [newMail, setNewMail] = useState(initialMail || mailService.getEmptyMail())
+
+    const mailRef = useRef(newMail)
 
     useEffect(() => {
-        draftRef.current = newMail
+        mailRef.current = newMail
     }, [newMail])
-
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const currDraft = draftRef.current
+            const currMail = mailRef.current
 
-            // שומרים רק אם יש תוכן כלשהו ועדיין לא נשלח
-            if (currDraft.to || currDraft.subject || currDraft.body) {
-                // console.log('Auto saving draft...')
+            if ((currMail.to || currMail.subject || currMail.body) && !currMail.sentAt) {
 
-                const draftToSave = {
-                    ...currDraft,
-                    createdAt: currDraft.createdAt || Date.now()
-                }
-
-                // שולחים true כדי לסמן שזו שמירה אוטומטית (לא לסגור חלון)
-                onSaveMail(draftToSave, true)
-                    .then(savedDraft => {
-                        // אם לטיוטה לא היה ID (פעם ראשונה), מעדכנים אותו כעת
-                        // כדי שהשמירה הבאה תעדכן את אותו מסמך ולא תיצור חדש
-                        if (!currDraft.id) {
-                            setNewMail(prev => ({ ...prev, id: savedDraft.id }))
+                onSaveMail(currMail, true)
+                    .then(savedMail => {
+                        if (!currMail.id) {
+                            setNewMail(prev => ({ ...prev, id: savedMail.id }))
                         }
                     })
             }

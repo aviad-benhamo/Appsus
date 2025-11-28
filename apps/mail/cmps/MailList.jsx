@@ -2,7 +2,7 @@ import { MailPreview } from "./MailPreview.jsx"
 const { useOutletContext } = ReactRouterDOM
 
 export function MailList() {
-    const { mails, onUpdateMail, onRemoveMail, filterBy, onSetFilter } = useOutletContext()
+    const { mails, onUpdateMail, onRemoveMail, onEditDraft, filterBy, onSetFilter } = useOutletContext()
 
     function onSort(sortBy) {
         onSetFilter({ ...filterBy, sortBy })
@@ -35,7 +35,9 @@ export function MailList() {
                         key={mail.id}
                         mail={mail}
                         onUpdateMail={onUpdateMail}
-                        onRemoveMail={onRemoveMail} />
+                        onRemoveMail={onRemoveMail}
+                        onEditDraft={onEditDraft}
+                    />
                 ))}
             </ul>
         </section>

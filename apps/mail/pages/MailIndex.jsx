@@ -10,10 +10,9 @@ export function MailIndex() {
 
     const [mails, setMails] = useState(null)
     const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '', sortBy: 'date' })
-
-    const [isComposeOpen, setIsComposeOpen] = useState(false)
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
     const [stats, setStats] = useState({ unreadCount: 0, draftCount: 0 })
+    const [composeMail, setComposeMail] = useState(null)
 
     useEffect(() => {
         loadMails()
@@ -52,6 +51,7 @@ export function MailIndex() {
         return mailService.remove(mailId)
             .then(() => {
                 setMails(prevMails => prevMails.filter(m => m.id !== mailId))
+                refreshStats()
             })
             .catch(err => console.log('Cannot remove mail', err))
     }
@@ -60,7 +60,7 @@ export function MailIndex() {
         return mailService.save(mailToSend)
             .then((savedMail) => {
                 if (!isAutoSave) {
-                    setIsComposeOpen(false)
+                    setComposeMail(null)
                 }
 
                 if (filterBy.status === 'sent' || filterBy.status === 'draft') {
@@ -73,6 +73,9 @@ export function MailIndex() {
             .catch(err => console.log('Cannot save mail', err))
     }
 
+    function onEditDraft(draft) {
+        setComposeMail(draft)
+    }
 
     if (!mails) return <div>Loading...</div>
 
@@ -94,7 +97,7 @@ export function MailIndex() {
             <aside className="mail-sidebar">
                 <button
                     className={`compose-btn ${isSidebarExpanded ? '' : 'small'}`}
-                    onClick={() => setIsComposeOpen(true)}
+                    onClick={() => setComposeMail(mailService.getEmptyMail())}
                 >
                     <span className="icon">✏️</span>
                     {isSidebarExpanded && <span className="txt">Compose</span>}
@@ -114,13 +117,18 @@ export function MailIndex() {
                     mails,
                     onUpdateMail,
                     onRemoveMail,
+                    onEditDraft,
                     filterBy,
                     onSetFilter
                 }} />
             </main>
-            {isComposeOpen && <MailCompose
-                onSaveMail={onSaveMail}
-                onClose={() => setIsComposeOpen(false)} />}
+            {composeMail && (
+                <MailCompose
+                    initialMail={composeMail}
+                    onSaveMail={onSaveMail}
+                    onClose={() => setComposeMail(null)}
+                />
+            )}
         </section>
     )
 }

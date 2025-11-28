@@ -1,14 +1,18 @@
 const { useNavigate } = ReactRouterDOM
 
-export function MailPreview({ mail, onUpdateMail, onRemoveMail }) {
+export function MailPreview({ mail, onUpdateMail, onRemoveMail, onEditDraft }) {
     const navigate = useNavigate()
     const previewClass = `mail-preview ${mail.isRead ? 'read' : ''}`
 
     async function onOpenMail() {
-        if (!mail.isRead) {
-            await onUpdateMail({ ...mail, isRead: true })
+        if (!mail.sentAt) {
+            onEditDraft(mail)
+        } else {
+            if (!mail.isRead) {
+                await onUpdateMail({ ...mail, isRead: true })
+            }
+            navigate(`/mail/${mail.id}`)
         }
-        navigate(`/mail/${mail.id}`)
     }
 
     function onToggleRead(ev) {
@@ -49,13 +53,13 @@ export function MailPreview({ mail, onUpdateMail, onRemoveMail }) {
             <span className="from">{mail.from}</span>
             <span className="subject">{mail.subject}</span>
             <div className="actions">
-                <button onClick={onRemove} className="btn-icon" title="Delete">
-                    🗑️
-                </button>
+                <button onClick={onRemove} className="btn-icon" title="Delete">🗑️</button>
 
-                <button onClick={onToggleRead} className="btn-icon" title={mail.isRead ? 'Mark as unread' : 'Mark as read'}>
-                    {mail.isRead ? '📩' : '📧'}
-                </button>
+                {mail.sentAt && (
+                    <button onClick={onToggleRead} className="btn-icon">
+                        {mail.isRead ? '📩' : '📧'}
+                    </button>
+                )}
             </div>
 
             <span className="date">
