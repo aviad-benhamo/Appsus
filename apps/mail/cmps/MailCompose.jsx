@@ -1,10 +1,44 @@
 import { mailService } from "../services/mail.service.js"
 
-const { useState } = React
+const { useState, useEffect, useRef } = React
 
 export function MailCompose({ onSaveMail, onClose }) {
 
     const [newMail, setNewMail] = useState(mailService.getEmptyMail())
+    const draftRef = useRef(newMail)
+
+    useEffect(() => {
+        draftRef.current = newMail
+    }, [newMail])
+
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const currDraft = draftRef.current
+
+            // שומרים רק אם יש תוכן כלשהו ועדיין לא נשלח
+            if (currDraft.to || currDraft.subject || currDraft.body) {
+                // console.log('Auto saving draft...')
+
+                const draftToSave = {
+                    ...currDraft,
+                    createdAt: currDraft.createdAt || Date.now()
+                }
+
+                // שולחים true כדי לסמן שזו שמירה אוטומטית (לא לסגור חלון)
+                onSaveMail(draftToSave, true)
+                    .then(savedDraft => {
+                        // אם לטיוטה לא היה ID (פעם ראשונה), מעדכנים אותו כעת
+                        // כדי שהשמירה הבאה תעדכן את אותו מסמך ולא תיצור חדש
+                        if (!currDraft.id) {
+                            setNewMail(prev => ({ ...prev, id: savedDraft.id }))
+                        }
+                    })
+            }
+        }, 5000)
+
+        return () => clearInterval(intervalId)
+    }, [])
 
     function handleChange({ target }) {
         const field = target.name
@@ -14,14 +48,12 @@ export function MailCompose({ onSaveMail, onClose }) {
 
     function onSend(ev) {
         ev.preventDefault()
-
         const mailToSend = {
             ...newMail,
-            createdAt: Date.now(),
+            createdAt: newMail.createdAt || Date.now(),
             sentAt: Date.now(),
             isRead: true,
         }
-
         onSaveMail(mailToSend)
     }
 
@@ -29,7 +61,7 @@ export function MailCompose({ onSaveMail, onClose }) {
         if (newMail.to || newMail.subject || newMail.body) {
             const draftToSave = {
                 ...newMail,
-                createdAt: Date.now(),
+                createdAt: newMail.createdAt || Date.now(),
             }
             onSaveMail(draftToSave)
         } else {

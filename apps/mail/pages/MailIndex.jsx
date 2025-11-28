@@ -56,18 +56,21 @@ export function MailIndex() {
             .catch(err => console.log('Cannot remove mail', err))
     }
 
-    function onSaveMail(mailToSend) {
-        mailService.save(mailToSend)
-            .then(() => {
-                setIsComposeOpen(false)
+    function onSaveMail(mailToSend, isAutoSave = false) {
+        return mailService.save(mailToSend)
+            .then((savedMail) => {
+                if (!isAutoSave) {
+                    setIsComposeOpen(false)
+                }
 
                 if (filterBy.status === 'sent' || filterBy.status === 'draft') {
                     loadMails()
                 }
-                // UserMsg "Mail Sent"
                 refreshStats()
+
+                return savedMail
             })
-            .catch(err => console.log('Cannot send mail', err))
+            .catch(err => console.log('Cannot save mail', err))
     }
 
 
