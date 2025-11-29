@@ -2,6 +2,8 @@ import { mailService } from "../services/mail.service.js"
 import { MailFilter } from "../cmps/MailFilter.jsx"
 import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
+import { UserMsg } from "../cmps/UserMsg.jsx"
+import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service.js"
 
 const { useState, useEffect } = React
 const { Outlet } = ReactRouterDOM
@@ -44,7 +46,10 @@ export function MailIndex() {
                 }
                 refreshStats()
             })
-            .catch(err => console.log('Cannot update mail', err))
+            .catch(err => {
+                console.log('Cannot update mail', err)
+                showErrorMsg('Cannot update mail')
+            })
     }
 
     function onRemoveMail(mailId) {
@@ -52,8 +57,12 @@ export function MailIndex() {
             .then(() => {
                 setMails(prevMails => prevMails.filter(m => m.id !== mailId))
                 refreshStats()
+                showSuccessMsg('Conversation moved to Trash')
             })
-            .catch(err => console.log('Cannot remove mail', err))
+            .catch(err => {
+                showErrorMsg('Failed to move conversation to Trash')
+                console.log('Cannot remove mail', err)
+            })
     }
 
     function onSaveMail(mailToSend, isAutoSave = false) {
@@ -61,6 +70,11 @@ export function MailIndex() {
             .then((savedMail) => {
                 if (!isAutoSave) {
                     setComposeMail(null)
+                    if (savedMail.sentAt) {
+                        showSuccessMsg('Message sent')
+                    } else {
+                        showSuccessMsg('Draft saved')
+                    }
                 }
 
                 if (filterBy.status === 'sent' || filterBy.status === 'draft') {
@@ -70,7 +84,10 @@ export function MailIndex() {
 
                 return savedMail
             })
-            .catch(err => console.log('Cannot save mail', err))
+            .catch(err => {
+                console.log('Cannot save mail', err)
+                if (!isAutoSave) showErrorMsg('Cannot save mail')
+            })
     }
 
     function onEditDraft(draft) {
@@ -129,6 +146,7 @@ export function MailIndex() {
                     onClose={() => setComposeMail(null)}
                 />
             )}
+            <UserMsg />
         </section>
     )
 }
