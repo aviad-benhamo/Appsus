@@ -130,3 +130,70 @@
     font-size: 20px;
     color: var(--clr-txt-secondary);
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .mail-index {
+        grid-template-columns: 1fr;
+        grid-template-rows: var(--header-height) 1fr;
+    }
+
+    .mail-index.collapsed {
+        grid-template-columns: 1fr;
+    }
+
+    .mail-header {
+        gap: 10px;
+        padding: 0 8px;
+        position: relative;
+    }
+
+    .header-start {
+        min-width: auto;
+        gap: 8px;
+    }
+
+    .logo-brand h3 {
+        display: none;
+    }
+
+    .mail-sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-width);
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        background-color: var(--clr-bg-white);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .mail-index:not(.collapsed) .mail-sidebar {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 99;
+    }
+
+    .mail-main-content {
+        grid-column: 1;
+        border-radius: 0;
+    }
+
+    .compose-btn {
+        margin-left: 8px;
+    }
+
+    .compose-btn.small {
+        margin-left: 8px;
+    }
+}

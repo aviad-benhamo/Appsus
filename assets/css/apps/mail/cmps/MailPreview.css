@@ -89,3 +89,59 @@
     background-color: rgba(0, 0, 0, 0.08);
     color: var(--clr-txt-main);
 }
+
+/* Mobile Responsive Styles - Gmail-like layout */
+@media (max-width: 768px) {
+    .mail-preview {
+        grid-template-columns: 30px 1fr auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "star from date"
+            "star subject actions";
+        padding: 12px 10px;
+        gap: 4px 8px;
+    }
+
+    .mail-preview .star {
+        grid-area: star;
+        align-self: start;
+        margin-top: 2px;
+    }
+
+    .mail-preview .from {
+        grid-area: from;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .mail-preview .subject {
+        grid-area: subject;
+        font-size: 13px;
+        color: var(--clr-txt-secondary);
+        padding-right: 0;
+    }
+
+    .mail-preview .date {
+        grid-area: date;
+        font-size: 12px;
+        text-align: right;
+        justify-self: end;
+    }
+
+    .mail-preview .actions {
+        grid-area: actions;
+        opacity: 1;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+
+    .mail-preview .actions .btn-icon {
+        font-size: 0.9rem;
+        padding: 2px;
+    }
+
+    .mail-preview:not(.read) .subject {
+        font-weight: 600;
+        color: var(--clr-txt-main);
+    }
+}

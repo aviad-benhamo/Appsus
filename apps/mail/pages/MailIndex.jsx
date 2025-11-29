@@ -4,15 +4,17 @@ import { MailFolderList } from "../cmps/MailFolderList.jsx"
 import { MailCompose } from "../cmps/MailCompose.jsx"
 import { UserMsg } from "../cmps/UserMsg.jsx"
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service.js"
+import { useIsMobile } from "../../../services/hooks.service.js"
 
 const { useState, useEffect } = React
 const { Outlet } = ReactRouterDOM
 
 export function MailIndex() {
+    const isMobile = useIsMobile()
 
     const [mails, setMails] = useState(null)
     const [filterBy, setFilterBy] = useState({ status: 'inbox', txt: '', isRead: '', sortBy: 'date' })
-    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
+    const [isSidebarExpanded, setIsSidebarExpanded] = useState(!window.matchMedia('(max-width: 768px)').matches)
     const [stats, setStats] = useState({ unreadCount: 0, draftCount: 0 })
     const [composeMail, setComposeMail] = useState(null)
 
@@ -20,6 +22,13 @@ export function MailIndex() {
         loadMails()
         refreshStats()
     }, [filterBy])
+
+    // Close sidebar on mobile when screen resizes
+    useEffect(() => {
+        if (isMobile) {
+            setIsSidebarExpanded(false)
+        }
+    }, [isMobile])
 
     function refreshStats() {
         mailService.getMailCount().then(setStats)
@@ -96,8 +105,21 @@ export function MailIndex() {
 
     if (!mails) return <div>Loading...</div>
 
+    function closeSidebarOnMobile() {
+        if (isMobile) {
+            setIsSidebarExpanded(false)
+        }
+    }
+
     return (
         <section className={`mail-index ${isSidebarExpanded ? '' : 'collapsed'}`}>
+            {/* Mobile overlay to close sidebar */}
+            {isMobile && isSidebarExpanded && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsSidebarExpanded(false)}
+                />
+            )}
             <header className="mail-header">
                 <div className="header-start">
                     <button
@@ -129,6 +151,7 @@ export function MailIndex() {
                     unreadCount={stats.unreadCount}
                     draftCount={stats.draftCount}
                     isExpanded={isSidebarExpanded}
+                    onFolderClick={closeSidebarOnMobile}
                 />
             </aside>
 

@@ -1,12 +1,13 @@
 const { useNavigate } = ReactRouterDOM
 
-export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount, isExpanded }) {
+export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount, isExpanded, onFolderClick }) {
 
     const navigate = useNavigate()
 
     function onFolderSelect(folderStats) {
         onSetFilter(folderStats)
         navigate('/mail')
+        if (onFolderClick) onFolderClick()
     }
 
     function FolderRow({ label, icon, isActive, onClick, count }) {

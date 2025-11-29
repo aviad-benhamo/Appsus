@@ -11,7 +11,7 @@ export function MailPreview({ mail, onUpdateMail, onRemoveMail, onEditDraft }) {
             if (!mail.isRead) {
                 await onUpdateMail({ ...mail, isRead: true })
             }
-            navigate(`/mail/${mail.id}`)
+            navigate(`/mail/details/${mail.id}`)
         }
     }
 

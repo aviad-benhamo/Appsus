@@ -37,3 +37,16 @@
     margin: 0;
     padding: 0;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .mail-list-actions {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .sort-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
