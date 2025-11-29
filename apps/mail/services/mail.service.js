@@ -143,9 +143,9 @@ function _createMails() {
             sentAt: Date.now(),
             isRead: false,
             isStarred: true,
-            subject: 'Welcome to MisterEmail!',
+            subject: 'Welcome to AppsusEmail!',
             body: 'We are thrilled to have you here. This is a demo app built with React.',
-            from: 'admin@misteremail.com',
+            from: 'admin@appsusemail.com',
             to: loggedinUser.email,
             fromAvatar: 'https://cdn-icons-png.flaticon.com/512/3225/3225194.png'
         })
