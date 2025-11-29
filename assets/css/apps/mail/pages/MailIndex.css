@@ -92,6 +92,7 @@
     border-radius: 50%;
     justify-content: center;
     gap: 0;
+    margin-left: 0;
 }
 
 .compose-btn:hover {

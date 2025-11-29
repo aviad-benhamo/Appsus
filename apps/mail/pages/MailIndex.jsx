@@ -119,7 +119,7 @@ export function MailIndex() {
                     className={`compose-btn ${isSidebarExpanded ? '' : 'small'}`}
                     onClick={() => setComposeMail(mailService.getEmptyMail())}
                 >
-                    <span className="icon">✏️</span>
+                    <span className="icon"><i className="fa-solid fa-pencil"></i></span>
                     {isSidebarExpanded && <span className="txt">Compose</span>}
                 </button>
 

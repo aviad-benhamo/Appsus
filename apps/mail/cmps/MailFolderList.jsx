@@ -1,6 +1,5 @@
 const { useNavigate } = ReactRouterDOM
 
-
 export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount, isExpanded }) {
 
     const navigate = useNavigate()
@@ -17,7 +16,7 @@ export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount,
                 onClick={onClick}
                 title={label}
             >
-                <span className="icon">{icon}</span>
+                <span className="icon"><i className={icon}></i></span>
 
                 {isExpanded && (
                     <React.Fragment>
@@ -29,44 +28,49 @@ export function MailFolderList({ filterBy, onSetFilter, unreadCount, draftCount,
         )
     }
 
-
     return (
         <nav className="mail-folder-list">
 
             <FolderRow
-                label="Inbox" icon="📥"
+                label="Inbox"
+                icon="fa-solid fa-inbox"
                 isActive={filterBy.status === 'inbox' && filterBy.isRead === ''}
                 onClick={() => onFolderSelect({ status: 'inbox', isRead: '' })}
                 count={unreadCount}
             />
 
             <FolderRow
-                label="Unread" icon="✉️"
+                label="Unread"
+                icon="fa-regular fa-envelope"
                 isActive={filterBy.isRead === false}
                 onClick={() => onFolderSelect({ status: 'inbox', isRead: false })}
             />
 
             <FolderRow
-                label="Starred" icon="⭐️"
+                label="Starred"
+                icon="fa-regular fa-star"
                 isActive={filterBy.status === 'starred'}
                 onClick={() => onFolderSelect({ status: 'starred', isRead: '' })}
             />
 
             <FolderRow
-                label="Sent" icon="📤"
+                label="Sent"
+                icon="fa-regular fa-paper-plane"
                 isActive={filterBy.status === 'sent'}
                 onClick={() => onFolderSelect({ status: 'sent', isRead: '' })}
             />
 
             <FolderRow
-                label="Drafts" icon="📄"
+                label="Drafts"
+                icon="fa-regular fa-file"
                 isActive={filterBy.status === 'draft'}
                 onClick={() => onFolderSelect({ status: 'draft', isRead: '' })}
                 count={draftCount}
             />
 
             <FolderRow
-                label="Trash" icon="🗑️"
+                label="Trash"
+                icon="fa-regular fa-trash-can"
                 isActive={filterBy.status === 'trash'}
                 onClick={() => onFolderSelect({ status: 'trash', isRead: '' })}
             />

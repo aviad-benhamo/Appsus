@@ -56,8 +56,8 @@ export function MailPreview({ mail, onUpdateMail, onRemoveMail, onEditDraft }) {
                 <button onClick={onRemove} className="btn-icon" title="Delete">🗑️</button>
 
                 {mail.sentAt && (
-                    <button onClick={onToggleRead} className="btn-icon">
-                        {mail.isRead ? '📩' : '📧'}
+                    <button onClick={onToggleRead} className="btn-icon" title={mail.isRead ? "Mark as unread" : "Mark as read"}>
+                        <i className={`fa-regular ${mail.isRead ? 'fa-envelope' : 'fa-envelope-open'}`}></i>
                     </button>
                 )}
             </div>
