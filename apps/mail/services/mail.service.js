@@ -104,6 +104,22 @@ function getEmptyMail() {
     }
 }
 
+function getMailCount() {
+    return storageService.query(MAIL_KEY).then(mails => {
+        return mails.reduce((acc, mail) => {
+            if (mail.to === loggedinUser.email && !mail.removedAt && mail.sentAt && !mail.isRead) {
+                acc.unreadCount++
+            }
+
+            if (!mail.sentAt && !mail.removedAt) {
+                acc.draftCount++
+            }
+
+            return acc
+        }, { unreadCount: 0, draftCount: 0 })
+    })
+}
+
 function getLoggedinUser() {
     return { ...loggedinUser }
 }
@@ -120,41 +136,111 @@ function _createMails() {
     let mails = utilService.loadFromStorage(MAIL_KEY)
     if (!mails || !mails.length) {
         mails = []
-        for (let i = 0; i < 20; i++) {
-            mails.push(_createMail(i))
+        // Welcome mail
+        mails.push({
+            id: utilService.makeId(),
+            createdAt: Date.now(),
+            sentAt: Date.now(),
+            isRead: false,
+            isStarred: true,
+            subject: 'Welcome to MisterEmail!',
+            body: 'We are thrilled to have you here. This is a demo app built with React.',
+            from: 'admin@misteremail.com',
+            to: loggedinUser.email,
+            fromAvatar: 'https://cdn-icons-png.flaticon.com/512/3225/3225194.png'
+        })
+
+        // Generate 50 realistic emails
+        for (let i = 0; i < 50; i++) {
+            mails.push(_createRandomMail(i))
         }
         utilService.saveToStorage(MAIL_KEY, mails)
     }
 }
 
-function _createMail(i) {
-    const isIncoming = Math.random() > 0.3
+function _createRandomMail(i) {
+    const isIncoming = Math.random() > 0.2
+    const createdAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 30)
+    const sentAt = (isIncoming || Math.random() > 0.2) ? createdAt + 10000 : null
+
+    const companies = [
+        { name: 'Netflix', domain: 'netflix.com', avatar: 'https://logo.clearbit.com/netflix.com' },
+        { name: 'Amazon', domain: 'amazon.com', avatar: 'https://logo.clearbit.com/amazon.com' },
+        { name: 'Spotify', domain: 'spotify.com', avatar: 'https://logo.clearbit.com/spotify.com' },
+        { name: 'Google', domain: 'google.com', avatar: 'https://logo.clearbit.com/google.com' },
+        { name: 'LinkedIn', domain: 'linkedin.com', avatar: 'https://logo.clearbit.com/linkedin.com' },
+        { name: 'GitHub', domain: 'github.com', avatar: 'https://logo.clearbit.com/github.com' },
+        { name: 'Apple', domain: 'apple.com', avatar: 'https://logo.clearbit.com/apple.com' },
+        { name: 'Slack', domain: 'slack.com', avatar: 'https://logo.clearbit.com/slack.com' }
+    ]
+
+    const firstNames = ['John', 'Sarah', 'Michael', 'Emma', 'David', 'Rachel', 'James', 'Emily', 'Robert', 'Jessica']
+    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis']
+
+    const subjects = [
+        'Your subscription is about to expire - Action Required',
+        'New login from an unrecognized device in Tel Aviv',
+        'Check out this new feature we just released!',
+        'Meeting rescheduled: Project Kickoff to Monday at 10 AM',
+        'Your Amazon.com order #123-4567890-1234567 has shipped',
+        'Weekend plans? Let’s catch up!',
+        '30% off on all electronics - Limited time offer',
+        'You have a new follower on GitHub',
+        'Invoice #4023 for services rendered in October',
+        'Security Alert: Please verify your email address immediately',
+        'Invitation: Annual Company Party at the Rooftop Bar',
+        'Your weekly performance report is ready for view'
+    ]
+
+    const bodies = [
+        'Hi there,\n\nI hope this email finds you well. I wanted to follow up on our previous conversation regarding the project timeline. We have made significant progress and would love to share the updates with you.\n\nPlease let me know when you are available for a quick sync.\n\nBest regards,',
+
+        'Hello,\n\nWe noticed a new login to your account from an unrecognized device. If this was you, you can safely ignore this email. If not, please change your password immediately to secure your account.\n\nStay safe,',
+
+        'Hey!\n\nAre you free this weekend? We are planning a small get-together at the park. Would love to see you there! Let me know if you can make it.\n\nCheers,',
+
+        'Dear Customer,\n\nYour order has been shipped and is on its way to you. You can track your package using the link below. Thank you for shopping with us!\n\nSupport Team',
+
+        'Greetings,\n\nPlease find the attached invoice for the services provided last month. Let us know if you have any questions or require further clarification.\n\nSincerely,'
+    ]
+
+    const isCompany = Math.random() > 0.5
+
+    let senderName, senderEmail, senderAvatar
+
+    if (isIncoming && isCompany) {
+        const company = companies[utilService.getRandomIntInclusive(0, companies.length - 1)]
+        senderName = company.name
+        senderEmail = `noreply@${company.domain}`
+        senderAvatar = company.avatar
+    } else if (isIncoming) {
+        const first = firstNames[utilService.getRandomIntInclusive(0, firstNames.length - 1)]
+        const last = lastNames[utilService.getRandomIntInclusive(0, lastNames.length - 1)]
+        senderName = `${first} ${last}`
+        senderEmail = `${first.toLowerCase()}.${last.toLowerCase()}@gmail.com`
+        senderAvatar = `https://i.pravatar.cc/150?u=${senderEmail}`
+    } else {
+        senderName = loggedinUser.fullname
+        senderEmail = loggedinUser.email
+        senderAvatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+    }
+
+    const subject = subjects[utilService.getRandomIntInclusive(0, subjects.length - 1)]
+    const body = bodies[utilService.getRandomIntInclusive(0, bodies.length - 1)]
+
     return {
         id: utilService.makeId(),
-        createdAt: Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 30), // up to 1 month ago
-        subject: utilService.makeLorem(3),
-        body: utilService.makeLorem(20),
-        isRead: Math.random() > 0.7,
+        createdAt: createdAt,
+        sentAt: sentAt,
+        removedAt: Math.random() > 0.9 ? Date.now() : null,
+        isRead: Math.random() > 0.5,
         isStarred: Math.random() > 0.8,
-        sentAt: Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 7),
-        removedAt: Math.random() > 0.9 ? Date.now() : null, // 10% chance to be in trash
-        from: isIncoming ? `${utilService.makeLorem(1)}@momo.com` : loggedinUser.email,
-        to: isIncoming ? loggedinUser.email : `${utilService.makeLorem(1)}@momo.com`
+        subject: subject,
+        body: body,
+        from: senderEmail,
+        fromName: senderName,
+        fromAvatar: senderAvatar,
+        to: isIncoming ? loggedinUser.email : `recipient@example.com`
     }
 }
 
-function getMailCount() {
-    return storageService.query(MAIL_KEY).then(mails => {
-        return mails.reduce((acc, mail) => {
-            if (mail.to === loggedinUser.email && !mail.removedAt && mail.sentAt && !mail.isRead) {
-                acc.unreadCount++
-            }
-
-            if (!mail.sentAt && !mail.removedAt) {
-                acc.draftCount++
-            }
-
-            return acc
-        }, { unreadCount: 0, draftCount: 0 })
-    })
-}

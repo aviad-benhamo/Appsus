@@ -30,9 +30,7 @@ export function MailDetails({ mails }) {
 
     async function onToggleReadStatus() {
         const mailToUpdate = { ...mail, isRead: !mail.isRead }
-
         await onUpdateMail(mailToUpdate)
-
         navigate('/mail')
     }
 
@@ -52,8 +50,23 @@ export function MailDetails({ mails }) {
 
             <h2>{mail.subject}</h2>
             <div className="mail-header-details">
-                <h4>From: {mail.from}</h4>
-                <span>{new Date(mail.createdAt).toLocaleString()}</span>
+                <div className="user-avatar">
+                    {mail.fromAvatar ? (
+                        <img src={mail.fromAvatar} alt="Avatar" />
+                    ) : (
+                        <span className="fallback-avatar">👤</span>
+                    )}
+                </div>
+
+                <div className="sender-info">
+                    <h4>
+                        {mail.fromName || mail.from.split('@')[0]}
+                        <span className="email-address"> &lt;{mail.from}&gt;</span>
+                    </h4>
+                    <span className="date-display">
+                        {new Date(mail.createdAt).toLocaleString()}
+                    </span>
+                </div>
             </div>
             <pre className="mail-body">{mail.body}</pre>
         </section>
