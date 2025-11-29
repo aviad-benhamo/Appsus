@@ -3,14 +3,14 @@
     max-width: 720px;
     display: flex;
     align-items: center;
-    background-color: #eaf1fb;
+    background-color: var(--clr-bg-search);
     border-radius: 24px;
     padding: 4px 8px;
     transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .mail-filter:focus-within {
-    background-color: #fff;
+    background-color: var(--clr-bg-white);
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
 }
 
@@ -21,5 +21,5 @@
     padding: 10px 12px;
     font-size: 16px;
     outline: none;
-    color: #1f1f1f;
+    color: var(--clr-txt-main);
 }

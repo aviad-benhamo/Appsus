@@ -10,12 +10,28 @@
     border-bottom-right-radius: 20px;
     cursor: pointer;
     margin-bottom: 2px;
-    color: #202124;
+    color: var(--clr-txt-main);
     font-size: 14px;
+
     display: flex;
     align-items: center;
     gap: 18px;
-    transition: all 0.2s;
+
+    transition: background-color 0.1s;
+}
+
+.mail-folder-list .folder-link:hover {
+    background-color: var(--clr-hover);
+}
+
+.mail-folder-list .folder-link.active {
+    background-color: var(--clr-selected);
+    font-weight: 700;
+    color: var(--clr-selected-txt);
+}
+
+.mail-folder-list .icon {
+    font-size: 1.1em;
 }
 
 .mail-folder-list .folder-link.collapsed {
@@ -33,28 +49,13 @@
     border-radius: 50%;
 }
 
-.mail-folder-list .folder-link:hover {
-    background-color: #eaebef;
-}
-
-/* Active State Styling */
-.mail-folder-list .folder-link.active {
-    background-color: #d3e3fd;
-    font-weight: 700;
-    color: #001d35;
-}
-
-.mail-folder-list .icon {
-    font-size: 1.1em;
-}
-
 .badge {
     margin-left: auto;
     font-size: 12px;
     font-weight: bold;
-    color: #444746;
+    color: var(--clr-txt-secondary);
 }
 
 .folder-link.active .badge {
-    color: #001d35;
+    color: var(--clr-selected-txt);
 }

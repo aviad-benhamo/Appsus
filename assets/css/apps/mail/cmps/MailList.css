@@ -1,9 +1,9 @@
 .mail-list-actions {
     padding: 10px 15px;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid var(--clr-divider);
     display: flex;
     gap: 10px;
-    background-color: #fff;
+    background-color: var(--clr-bg-white);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -11,23 +11,23 @@
 
 .sort-btn {
     background: none;
-    border: 1px solid #dadce0;
-    border-radius: 16px;
+    border: 1px solid var(--clr-border-dark);
+    border-radius: var(--border-radius-md);
     padding: 4px 12px;
     font-size: 13px;
     cursor: pointer;
-    color: #444746;
+    color: var(--clr-txt-secondary);
     transition: all 0.2s;
 }
 
 .sort-btn:hover {
-    background-color: #f1f3f4;
-    border-color: #dadce0;
+    background-color: var(--clr-hover-light);
+    border-color: var(--clr-border-dark);
 }
 
 .sort-btn.active {
-    background-color: #e8f0fe;
-    color: #0b57d0;
+    background-color: var(--clr-selected-light);
+    color: var(--clr-primary);
     border-color: transparent;
     font-weight: 500;
 }
