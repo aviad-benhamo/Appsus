@@ -13,19 +13,21 @@ export function About() {
                         />
                     </div>
 
-                    <h2>Aviad Ben Hamo</h2>
-                    <p className="title">Full Stack Developer</p>
+                    <div className="profile-info">
+                        <h2>Aviad Ben Hamo</h2>
+                        <p className="title">Full Stack Developer</p>
 
-                    <div className="social-links">
-                        <a href="https://www.linkedin.com/in/aviad-ben-hamo-176a18122/" title="LinkedIn" target="_blank" rel="noopener noreferrer">
-                            <i className="fa-brands fa-linkedin"></i>
-                        </a>
-                        <a href="https://github.com/aviad-benhamo/" title="GitHub" target="_blank" rel="noopener noreferrer">
-                            <i className="fa-brands fa-github"></i>
-                        </a>
-                        <a href="mailto:aviad.benhamo@gmail.com" title="Email">
-                            <i className="fa-solid fa-envelope"></i>
-                        </a>
+                        <div className="social-links">
+                            <a href="https://www.linkedin.com/in/aviad-ben-hamo-176a18122/" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+                                <i className="fa-brands fa-linkedin"></i>
+                            </a>
+                            <a href="https://github.com/aviad-benhamo/" title="GitHub" target="_blank" rel="noopener noreferrer">
+                                <i className="fa-brands fa-github"></i>
+                            </a>
+                            <a href="mailto:aviad.benhamo@gmail.com" title="Email">
+                                <i className="fa-solid fa-envelope"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
