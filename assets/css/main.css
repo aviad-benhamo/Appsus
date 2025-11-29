@@ -11,6 +11,7 @@
 
 /* Pages */
 @import './pages/home.css';
+@import './pages/about.css';
 
 /* @import './apps/note/pages/NoteIndex.css'; */
 
@@ -20,6 +21,7 @@
 
 /* @import './cmps/UserMsg.css'; */
 @import './cmps/AppHeader.css';
+
 
 
 /* Email App Cmps */
