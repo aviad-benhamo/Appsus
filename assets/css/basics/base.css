@@ -30,8 +30,17 @@ img {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+
 }
 
 .app-header {
     flex-shrink: 0;
+}
+
+.main-app-container {
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+
 }

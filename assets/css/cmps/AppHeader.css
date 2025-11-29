@@ -1,24 +1,87 @@
-header {
-    background: lightcyan;
-    border-bottom: 2px solid white;
-}
-
 .app-header {
+    position: fixed;
+    top: 8px;
+    right: 20px;
+    z-index: 1000;
     display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
+    justify-content: flex-end;
 }
 
-nav a {
-    margin: .5em;
+.apps-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--clr-txt-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-nav a:active {
-    color: purple;
+.apps-btn:hover {
+    background-color: rgba(60, 64, 67, 0.08);
 }
 
-nav a.active {
-    color: darkblue;
-    font-weight: bold;
-    text-decoration: overline;
+.apps-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: var(--clr-bg-white);
+    border: 1px solid var(--clr-border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 300px;
+    z-index: 1001;
+}
+
+.app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.app-item:hover {
+    background-color: var(--clr-bg-search);
+}
+
+.app-item .icon {
+    font-size: 28px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--clr-bg-surface);
+    color: var(--clr-primary);
+}
+
+.app-item span {
+    font-size: 14px;
+    color: var(--clr-txt-main);
+    font-weight: 500;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    cursor: default;
 }
