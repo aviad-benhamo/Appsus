@@ -76,6 +76,17 @@
     font-weight: 500;
 }
 
+.app-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+}
+
+.app-item.disabled:hover {
+    background-color: transparent;
+}
+
+
 .backdrop {
     position: fixed;
     top: 0;

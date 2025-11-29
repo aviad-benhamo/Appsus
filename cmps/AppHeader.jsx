@@ -42,7 +42,18 @@ export function AppHeader() {
                         </span>
                         <span>Mail</span>
                     </div>
+                    <div
+                        className="app-item disabled"
+                        title="Coming soon!"
+                        onClick={(e) => e.preventDefault()}
+                    >
+                        <span className="icon" style={{ color: '#fbbc04' }}>
+                            <i className="fa-solid fa-note-sticky"></i>
+                        </span>
+                        <span>Keep</span>
+                    </div>
                 </div>
+
             )}
 
             {isOpen && <div className="backdrop" onClick={() => setIsOpen(false)}></div>}
