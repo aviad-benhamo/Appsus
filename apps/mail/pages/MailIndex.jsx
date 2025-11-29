@@ -104,9 +104,12 @@ export function MailIndex() {
                         className="menu-toggle-btn"
                         onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
                     >
-                        ☰
+                        <i className="fa-solid fa-bars"></i>
                     </button>
-                    <h3>MisterEmail</h3>
+                    <div className="logo-brand">
+                        <i className="fa-solid fa-envelope fa-lg" style={{ color: '#0b57d0' }}></i>
+                        <h3>Appsus Mail</h3>
+                    </div>
                 </div>
                 <MailFilter filterBy={filterBy} onSetFilter={onSetFilter} />
             </header>

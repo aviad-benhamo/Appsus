@@ -106,3 +106,26 @@
     overflow-y: auto;
     height: 100%;
 }
+
+.logo-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.logo-brand h3 {
+    margin: 0;
+    color: var(--clr-txt-secondary);
+    font-size: 22px;
+    font-family: 'Product Sans', 'Segoe UI', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    position: relative;
+    top: -1px;
+}
+
+.menu-toggle-btn i {
+    font-size: 20px;
+    color: var(--clr-txt-secondary);
+}
